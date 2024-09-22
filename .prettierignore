@@ -1,0 +1,18 @@
+# .prettierignore
+
+# GitHub related files and directories
+.github/
+.github/**/*
+
+# Next.js build output
+.next/
+.next/**/*
+
+# Node modules
+node_modules/
+node_modules/**/*
+
+# Other files
+build/
+dist/
+coverage/

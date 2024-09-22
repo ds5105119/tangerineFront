@@ -1,8 +1,23 @@
-import Image from "next/image";
+'use client';
+
+import Image from 'next/image';
+import TopMainNav from '@/components/navBar/top-main-nav';
+import TopBasicNav from '@/components/navBar/top-basic-nav';
+import TopSearchNav from '@/components/navBar/top-search-nav';
+import TopUploadNav from '@/components/navBar/top-upload-nav';
+import TopChatNav from '@/components/navBar/top-chat-nav';
+import Button from '@/components/button/button';
 
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <TopMainNav>이별 =(눈물+슬픔)²/(술×담배연기)⁴-(사랑+약속+추억)+(미움+물거품+잿빛하늘)</TopMainNav>
+      <TopBasicNav></TopBasicNav>
+      <TopSearchNav onSubmit={(value) => console.log(value)}></TopSearchNav>
+      <TopUploadNav></TopUploadNav>
+      <TopChatNav>애월시 애월읍 어쩌구</TopChatNav>
+      <Button>발동</Button>
+
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -14,7 +29,7 @@ export default function Home() {
         />
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
-            Get started by editing{" "}
+            Get started by editing{' '}
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
               src/app/page.tsx
             </code>
@@ -56,13 +71,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
+          <Image aria-hidden src="https://nextjs.org/icons/file.svg" alt="File icon" width={16} height={16} />
           Learn
         </a>
         <a
@@ -71,13 +80,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
+          <Image aria-hidden src="https://nextjs.org/icons/window.svg" alt="Window icon" width={16} height={16} />
           Examples
         </a>
         <a
@@ -86,13 +89,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
+          <Image aria-hidden src="https://nextjs.org/icons/globe.svg" alt="Globe icon" width={16} height={16} />
           Go to nextjs.org →
         </a>
       </footer>

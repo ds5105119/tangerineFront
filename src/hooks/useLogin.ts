@@ -1,0 +1,53 @@
+import { useMutation } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axiosInstance';
+import { setAuth } from '@/lib/authToken';
+import { LoginRequestDto, socialLoginRequestDto, LoginResponseDto } from '@/types/api/accounts';
+
+export const useLogin = () => {
+  return useMutation<LoginResponseDto, Error, LoginRequestDto>({
+    mutationFn: async (credentials: LoginRequestDto) => {
+      try {
+        const response = await axiosInstance.post<LoginResponseDto>(
+          `${process.env.NEXT_PUBLIC_LOGIN_URL}`,
+          credentials
+        );
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    onSuccess: (authData) => {
+      setAuth(authData);
+    },
+    onError: (error) => {
+      console.error('로그인 오류:', error);
+    },
+  });
+};
+
+export const useSocialLogin = () => {
+  return useMutation<LoginResponseDto, Error, socialLoginRequestDto>({
+    mutationFn: async (credentials: socialLoginRequestDto) => {
+      try {
+        const response = await axiosInstance.post<LoginResponseDto>(
+          credentials.url,
+          { code: credentials.code },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    onSuccess: (authData) => {
+      setAuth(authData);
+    },
+    onError: (error) => {
+      console.error('소셜 로그인 오류:', error);
+    },
+  });
+};

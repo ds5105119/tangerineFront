@@ -1,6 +1,6 @@
 import { IoArrowBack } from 'react-icons/io5';
 import { topUploadNavProps } from './types';
-import Button from '@/components/button/button';
+import Button from '@/components/button/roundButton';
 
 const TopUploadNav = ({ onBackButtonClick, onSaveButtonClick }: topUploadNavProps) => {
   return (

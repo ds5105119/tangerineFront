@@ -1,0 +1,51 @@
+import axios, { InternalAxiosRequestConfig, AxiosRequestConfig, AxiosError } from 'axios';
+import { LoginResponseDto } from '@/types/api/accounts';
+import { getAuth, setAuth, clearAuth } from '@/lib/authToken';
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
+
+axiosInstance.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const authData = getAuth();
+    if (authData?.access) {
+      config.headers.Authorization = `Bearer ${authData.access}`;
+    }
+    return config;
+  },
+  (error: AxiosError) => Promise.reject(error)
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      try {
+        originalRequest._retry = true;
+        const refresh_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.REFRESH_TOKEN_URI}`;
+        const response = await axios.post<LoginResponseDto>(refresh_url, {}, { withCredentials: true });
+
+        if (response.status === 200) {
+          setAuth(response.data);
+          return axiosInstance(originalRequest);
+        }
+        clearAuth();
+      } catch (refreshError) {
+        clearAuth();
+      }
+    } else if (error.response?.status === 401 && originalRequest._retry) {
+      clearAuth();
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;

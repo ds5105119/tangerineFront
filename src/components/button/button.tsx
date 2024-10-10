@@ -2,12 +2,12 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const buttonVariants = cva(
-  ' w-full flex items-center justify-center rounded font-medium transition-all duration-75 ease-in-out focus:outline-none focus-visible:ring-0',
+  ' w-full flex items-center justify-center rounded-full font-medium transition-all duration-75 ease-in-out focus:outline-none focus-visible:ring-0',
   {
     variants: {
       intent: {
         default: 'text-white hover:brightness-110',
-        outline: 'text-gray-700 dark:text-white bg-white hover:bg-gray-50 shadow-primary dark:shadow-dark',
+        outline: 'text-gray-700 bg-white hover:bg-gray-50 shadow-primary dark:shadow-dark',
         disabled:
           'cursor-not-allowed text-gray-400 dark:text-gray-300 bg-gray-100 hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-600',
       },
@@ -61,5 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
+
+Button.displayName = 'Button';
 
 export default Button;

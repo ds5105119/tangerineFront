@@ -24,7 +24,7 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <Button onClick={handleGoogleLogin} intent={'outline'} size={'long'}>
+    <Button onClick={handleGoogleLogin} intent={'outline'} size={'long'} className="bg-white dark:bg-whilte">
       <FcGoogle className="h-5 w-5 mr-2" />
       Google로 로그인
     </Button>

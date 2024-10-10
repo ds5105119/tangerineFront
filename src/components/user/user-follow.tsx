@@ -31,7 +31,9 @@ const UserFollow = ({ user, onFollowButtonClick }: userFollowType) => {
         </div>
         <div className="flex justify-center min-w-20">
           {user.is_following ? (
-            <Button size={'s'}>팔로우</Button>
+            <Button size={'s'} onClick={onFollowButtonClick}>
+              팔로우
+            </Button>
           ) : (
             <Button intent={'active'} size={'s'}>
               팔로우 취소

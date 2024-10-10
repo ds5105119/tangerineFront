@@ -18,18 +18,18 @@ const TopSearchNav = ({ onBackButtonClick, onSubmit }: topSearchNavProps) => {
   };
 
   return (
-    <div className="w-full h-12 flex justify-between items-center align-middle bg-white px-4">
+    <div className="w-full min-h-12 flex justify-between items-center align-middle px-4">
       <button onClick={onBackButtonClick}>
-        <IoArrowBack size="27" className="text-black" />
+        <IoArrowBack size="27" />
       </button>
-      <div className="w-full h-9 flex align-middle ml-12 px-6 bg-gray-200 rounded-[12rem]">
+      <div className="w-full h-9 flex align-middle ml-12 px-6 bg-gray-200 dark:bg-gray-600 rounded-[12rem]">
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="@계정 검색"
-          className="w-full bg-transparent text-black focus:outline-none"
+          className="w-full bg-transparent focus:outline-none"
         />
       </div>
     </div>

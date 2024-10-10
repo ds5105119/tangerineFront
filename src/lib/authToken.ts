@@ -1,4 +1,5 @@
 import { LoginResponseDto } from '@/types/api/accounts';
+import { logout } from '@/hooks/accounts/account';
 
 const AUTH_STORAGE_KEY = 'authData';
 
@@ -21,8 +22,21 @@ export const getAuth = (): LoginResponseDto | null => {
   }
 };
 
+export const updateAuth = (access: string) => {
+  try {
+    const authData = getAuth();
+    if (authData) {
+      authData.access = access;
+      setAuth(authData);
+    }
+  } catch (error) {
+    console.error('Failed to update auth:', error);
+  }
+};
+
 export const clearAuth = (): void => {
   try {
+    logout();
     localStorage.removeItem(AUTH_STORAGE_KEY);
   } catch (error) {
     console.error('Error clearing auth data from localStorage:', error);

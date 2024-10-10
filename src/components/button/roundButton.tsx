@@ -39,4 +39,6 @@ const RoundButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
+RoundButton.displayName = 'RoundButton';
+
 export default RoundButton;

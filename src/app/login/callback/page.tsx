@@ -1,18 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSocialLogin } from '@/hooks/useLogin';
+import { useSocialLogin } from '@/hooks/accounts/useLogin';
+import { setAuth } from '@/lib/authToken';
 import LoadingAnimation from '@/components/loadingAnimation';
 
-export default function Callback() {
+const Callback = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const socialLogin = useSocialLogin();
+  const code = searchParams.get('code');
+  const state = searchParams.get('state');
 
   useEffect(() => {
-    const code = searchParams.get('code');
-    const state = searchParams.get('state');
     if (code && state) {
       try {
         const decodedState = JSON.parse(atob(decodeURIComponent(state)));
@@ -21,7 +22,8 @@ export default function Callback() {
         socialLogin.mutate(
           { url: `${process.env.NEXT_PUBLIC_GOOGLE_LOGIN_URI}`, code },
           {
-            onSuccess: () => {
+            onSuccess: (authData) => {
+              setAuth(authData);
               router.push(returnTo);
             },
             onError: (error) => {
@@ -34,13 +36,21 @@ export default function Callback() {
         router.push('/login?error=invalid_state');
       }
     }
-  }, [searchParams]);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
+    <div className="relative min-h-screen bg-white flex items-center justify-center">
       <div className="w-12 h-12 relative" role="status" aria-label="로딩 중">
         <LoadingAnimation />
       </div>
     </div>
+  );
+};
+
+export default function CallbackPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Callback />
+    </Suspense>
   );
 }

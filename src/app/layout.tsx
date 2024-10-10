@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import ReactQueryProvider from '@/components/react-query-provider';
+import DefaultNavBar from '@/components/navBar/navBar';
+import MobileNavBar from '@/components/navBar/mobileNavBar';
 import './globals.css';
 
 const geistSans = localFont({
@@ -27,7 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <div className="flex w-full min-h-[calc(100dvh-64px)] h-[calc(100dvh-64px)] max-h-[calc(100dvh-64px)] lg:min-h-screen lg:h-screen lg:max-h-screen">
+            <DefaultNavBar />
+            {children}
+            <MobileNavBar />
+          </div>
+        </ReactQueryProvider>
       </body>
     </html>
   );

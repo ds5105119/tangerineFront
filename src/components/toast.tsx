@@ -14,7 +14,7 @@ const Toast = ({ message, onClose }: ToastType) => {
   }, [onClose]);
 
   return (
-    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-black opacity-50 text-white text-pretty text-center text-sm py-4 px-8 rounded-full shadow-md">
+    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 dark:bg-gray-500 text-white dark:text-white text-pretty text-center text-sm py-4 px-8 rounded-full shadow-md">
       {message}
     </div>
   );

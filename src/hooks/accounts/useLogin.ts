@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axiosInstance';
 import { setAuth } from '@/lib/authToken';
 import { LoginRequestDto, socialLoginRequestDto, LoginResponseDto } from '@/types/api/accounts';
+import axiosInstance from '@/lib/axiosInstance';
 
 export const useLogin = () => {
   return useMutation<LoginResponseDto, Error, LoginRequestDto>({

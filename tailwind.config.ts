@@ -28,7 +28,7 @@ const config: Config = {
       boxShadow: {
         primary: '0px 0px 0px 1px rgba(9, 9, 11, 0.07), 0px 4px 4px 0px rgba(9, 9, 11, 0.05)',
         secondary: '0px 0px 0px 1px rgba(9, 9, 11, 0.07), 0px 6px 6px 0px rgba(9, 9, 11, 0.05)',
-        dark: '0px 0px 0px 2px rgba(200, 200, 200, 0.07)',
+        dark: '0px 0px 0px 1.5px rgba(200, 200, 200, 0.18)',
       },
     },
   },

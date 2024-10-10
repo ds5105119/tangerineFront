@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig, AxiosRequestConfig, AxiosError } from 'axios';
 import { LoginResponseDto } from '@/types/api/accounts';
-import { getAuth, setAuth, clearAuth } from '@/lib/authToken';
+import { getAuth, updateAuth, clearAuth } from '@/lib/authToken';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -27,17 +27,14 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
     if (error.response?.status === 401 && !originalRequest._retry) {
-      try {
-        originalRequest._retry = true;
-        const refresh_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.REFRESH_TOKEN_URI}`;
-        const response = await axios.post<LoginResponseDto>(refresh_url, {}, { withCredentials: true });
+      originalRequest._retry = true;
+      const refresh_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.NEXT_PUBLIC_REFRESH_TOKEN_URI}`;
+      const response = await axios.post<LoginResponseDto>(refresh_url, {}, { withCredentials: true });
 
-        if (response.status === 200) {
-          setAuth(response.data);
-          return axiosInstance(originalRequest);
-        }
-        clearAuth();
-      } catch (refreshError) {
+      if (response.status === 200) {
+        updateAuth(response.data.access);
+        return axiosInstance(originalRequest);
+      } else {
         clearAuth();
       }
     } else if (error.response?.status === 401 && originalRequest._retry) {

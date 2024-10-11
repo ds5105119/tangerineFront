@@ -1,75 +1,100 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { ChatMessageType, WebsocketMessage } from '@/types/api/chat';
+import { ChatMessageType, ChatMessagesQuery } from '@/types/api/chat';
+import { useQueryClient, InfiniteData } from '@tanstack/react-query';
+import { useWebSocketStore } from '@/lib/webSocket';
+import { getChatMessageList } from './chatApi';
 
-interface UseWebSocketOptions {
-  reconnectAttempts?: number;
-  reconnectInterval?: number;
-}
+const useWebSocket = () => {
+  const queryClient = useQueryClient();
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState<Event>();
+  const { socket, setSocket } = useWebSocketStore();
 
-export function useWebSocket(uuid: string, options: UseWebSocketOptions = {}) {
-  const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [messages, setMessages] = useState<ChatMessageType[]>();
-  const { reconnectAttempts = 3, reconnectInterval = 2000 } = options;
-
-  const connect = () => {
-    try {
-      const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_CHATS_URL}${uuid}/`);
-
-      ws.onopen = () => {
-        setIsConnected(true);
-        setError(null);
-      };
-
-      ws.onclose = () => {
-        setIsConnected(false);
-      };
-
-      ws.onerror = (event) => {
-        setError('WebSocket error occurred');
-        console.error('WebSocket error:', event);
-      };
+  useEffect(() => {
+    if (!socket) {
+      const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_CHATS_URL}`);
 
       ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data) as ChatMessageType;
-          setMessages((prevMessages) => (prevMessages ? [data, ...prevMessages] : [data]));
-        } catch (e) {
-          console.error('Error parsing message:', e);
+        console.log(event.data);
+        const data = JSON.parse(event.data);
+        const uuid = data.message.room_id;
+        const chatMessages = queryClient.getQueryData<InfiniteData<ChatMessagesQuery>>(['chatMessages', uuid]);
+
+        if (chatMessages) {
+          queryClient.setQueryData<InfiniteData<ChatMessagesQuery>>(['chatMessages', uuid], (oldData) => {
+            if (oldData) {
+              // eslint-disable-next-line
+              const newPages = oldData.pages.map((page: any, index: number) => {
+                if (index === 0) {
+                  return {
+                    results: [data.message, ...page.results],
+                  };
+                }
+                return page;
+              });
+
+              return {
+                pages: newPages,
+                pageParams: oldData.pageParams,
+              };
+            } else {
+              return oldData;
+            }
+          });
+        } else {
+          getChatMessageList({ uuid }).then((val) =>
+            queryClient.setQueryData(['chatMessages', uuid], {
+              pages: [val],
+              pageParams: [{ page: 1, uuid: uuid }],
+            })
+          );
         }
       };
 
-      setSocket(ws);
-    } catch (err) {
-      setError('Failed to create WebSocket connection');
-      console.error('WebSocket creation error:', err);
-      return null;
-    }
-  };
+      ws.onopen = () => {
+        setIsConnected(true);
+      };
 
-  useEffect(() => {
-    connect();
+      ws.onerror = (error) => {
+        setIsConnected(false);
+        setIsError(true);
+        setError(error);
+      };
+
+      ws.onclose = () => {
+        console.log('왜닫힘?');
+        setIsConnected(false);
+        setSocket(null);
+      };
+
+      setSocket(ws);
+    } else {
+      setIsConnected(true);
+    }
 
     return () => {
-      if (socket) {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.onclose = null;
+      } else if (socket) {
         socket.close();
+        setSocket(null);
+        setIsConnected(false);
       }
     };
-  }, [uuid]);
+  }, [socket, setSocket]);
 
-  const sendMessage = (message: WebsocketMessage) => {
+  const sendMessage = (message: ChatMessageType) => {
     if (socket?.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify(message));
+      socket.send(JSON.stringify({ message: message }));
     } else {
       console.error('WebSocket is not connected');
     }
   };
 
-  return {
-    sendMessage,
-    messages,
-    isConnected,
-    error,
-  };
-}
+  return { isConnected, isError, error, sendMessage };
+};
+
+export default useWebSocket;

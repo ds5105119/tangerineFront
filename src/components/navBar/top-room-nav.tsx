@@ -1,0 +1,39 @@
+'use client';
+
+import React, { KeyboardEvent, useState } from 'react';
+import { IoArrowBack } from 'react-icons/io5';
+import { topSearchNavProps } from './types';
+
+const TopRoomNav = ({ onBackButtonClick, onSubmit }: topSearchNavProps) => {
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // 한글에서 두번 입력되는 문제 해결을 위해 native Event 속성 참조
+    if (event.nativeEvent.isComposing && event.key === 'Enter' && onSubmit) {
+      onSubmit(inputValue);
+      setInputValue('');
+    } else if (event.key === 'Enter') {
+      setInputValue('');
+    }
+  };
+
+  return (
+    <div className="w-full min-h-16 flex justify-between items-center align-middle px-6">
+      <button onClick={onBackButtonClick}>
+        <IoArrowBack size="27" />
+      </button>
+      <div className="w-full h-9 flex align-middle ml-4 px-6 bg-gray-200 dark:bg-gray-600 rounded-[12rem]">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="@계정 검색"
+          className="w-full bg-transparent focus:outline-none"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default TopRoomNav;

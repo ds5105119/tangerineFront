@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useRegistration } from '@/hooks/accounts/useRegistration';
 import { setAuth } from '@/lib/authToken';
@@ -21,7 +22,6 @@ export default function LoginPage() {
   const [password1, setPassword1] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
   const [showToast, setShowToast] = useState<string>('');
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     registration.mutate(
@@ -31,7 +31,7 @@ export default function LoginPage() {
           setAuth(authData);
           const previousUrl = document.referrer;
 
-          if (previousUrl && !previousUrl.includes('/signup')) {
+          if (previousUrl && !previousUrl.includes('/signup') && !previousUrl.includes('/login')) {
             router.back();
           } else {
             router.push('/');
@@ -71,7 +71,7 @@ export default function LoginPage() {
           </div>
           <div className="mt-6">
             <TextDivider>Or continue with</TextDivider>
-            <form className="space-y-6 mt-4" onSubmit={handleLogin}>
+            <form className="space-y-6 mt-4" onSubmit={handleLogin} name="signupForm">
               <div>
                 <div className="text-sm font-bold">ID</div>
                 <div className="mt-1">
@@ -80,7 +80,7 @@ export default function LoginPage() {
                     name="text"
                     type="text"
                     autoComplete="text"
-                    placeholder="이메일 입력"
+                    placeholder="ID 입력"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -134,8 +134,8 @@ export default function LoginPage() {
                 </div>
               </div>
               <div>
-                <Button type="submit" intent={'default'} size={'long'} colorScheme={'blue'}>
-                  로그인
+                <Button type="submit" intent={'default'} size={'long'} colorScheme={'blue'} id="submit">
+                  회원가입
                 </Button>
               </div>
             </form>

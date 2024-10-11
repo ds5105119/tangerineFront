@@ -1,5 +1,4 @@
 import { LoginResponseDto } from '@/types/api/accounts';
-import { logout } from '@/hooks/accounts/account';
 
 const AUTH_STORAGE_KEY = 'authData';
 
@@ -36,7 +35,6 @@ export const updateAuth = (access: string) => {
 
 export const clearAuth = (): void => {
   try {
-    logout();
     localStorage.removeItem(AUTH_STORAGE_KEY);
   } catch (error) {
     console.error('Error clearing auth data from localStorage:', error);

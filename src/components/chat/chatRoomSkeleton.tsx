@@ -1,12 +1,9 @@
 import React from 'react';
-
-interface ChatRoomSkeletonProps {
-  itemCount?: number;
-}
+import { ChatRoomSkeletonProps } from './types';
 
 export const ChatRoomSkeleton = ({ itemCount = 4 }: ChatRoomSkeletonProps) => {
   return (
-    <div className="bg-gray-900 p-4 space-y-4">
+    <div className="p-4 space-y-4">
       {[...Array(itemCount)].map((_, index) => (
         <div key={index} className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gray-700 rounded-full animate-pulse" />

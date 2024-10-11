@@ -4,7 +4,7 @@ import { topChatNavProps } from './types';
 
 const TopChatNav = ({ onBackButtonClick, onMoreButtonClick, children }: topChatNavProps) => {
   return (
-    <div className="w-full h-12 flex justify-between items-center align-middle bg-white px-4">
+    <div className="flex w-12 justify-between items-center align-middle bg-white px-6">
       <div className="flex h-full items-center">
         <button onClick={onBackButtonClick}>
           <IoArrowBack size="27" className="text-black" />

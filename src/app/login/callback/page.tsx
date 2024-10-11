@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSocialLogin } from '@/hooks/accounts/useLogin';
 import { setAuth } from '@/lib/authToken';
@@ -10,8 +10,13 @@ const Callback = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const socialLogin = useSocialLogin();
-  const code = searchParams.get('code');
-  const state = searchParams.get('state');
+  const [code, setCode] = useState<string>();
+  const [state, setState] = useState<string>();
+
+  useEffect(() => {
+    setCode(searchParams.get('code') as string);
+    setState(searchParams.get('state') as string);
+  }, [searchParams]);
 
   useEffect(() => {
     if (code && state) {
@@ -36,7 +41,7 @@ const Callback = () => {
         router.push('/login?error=invalid_state');
       }
     }
-  }, []);
+  }, [code, state]);
 
   return (
     <div className="relative min-h-screen bg-white flex items-center justify-center">

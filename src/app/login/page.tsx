@@ -33,7 +33,7 @@ export default function LoginPage() {
             router.push('/');
           }
         },
-        onError: (error) => {
+        onError: () => {
           setShowToast('죄송합니다. 계정을 찾을 수 없습니다.');
         },
       }
@@ -101,6 +101,7 @@ export default function LoginPage() {
             <div className="mt-6">
               <Button
                 type="submit"
+                id="submit"
                 intent={'default'}
                 size={'long'}
                 colorScheme={'blue'}

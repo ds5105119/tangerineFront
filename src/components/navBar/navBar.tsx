@@ -6,20 +6,19 @@ import { FaCompass, FaRegCompass, FaPlus } from 'react-icons/fa6';
 import { FaPaperPlane, FaRegPaperPlane } from 'react-icons/fa';
 import { GoHome, GoHomeFill } from 'react-icons/go';
 import { RiCommandFill } from 'react-icons/ri';
-import { HiMenuAlt3 } from 'react-icons/hi';
-import { AuthType } from '@/types/api/accounts';
-import { getAuth } from '@/lib/authToken';
 import { authUserToUser } from '@/lib/accounts';
+import { useAuth } from '@/hooks/accounts/useAuth';
 import Profile from '@/components/user/profile';
 import NavBarButton from '@/components/button/navBarButton';
 import Logo from '@/assets/svg/logo.svg';
+import NavBarMenuButton from '../button/navBarMenuButton';
 
 const DefaultNavBar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [auth, setAuth] = useState<AuthType>();
   const [profile, setProfile] = useState<string>('/login');
   const [firstPath, setFirstPath] = useState<string>('unknown');
+  const { auth } = useAuth();
 
   const toggleExploreTab = () => {
     router.push('/explore');
@@ -41,10 +40,8 @@ const DefaultNavBar = () => {
   };
 
   useEffect(() => {
-    const authData = getAuth();
-    if (authData) {
-      setAuth(authData);
-      setProfile(`/${authData.user?.handle}`);
+    if (auth) {
+      setProfile(`/${auth.user?.handle}`);
     }
     if (!pathname || pathname === '/') {
       setFirstPath('');
@@ -88,6 +85,14 @@ const DefaultNavBar = () => {
                 <GoHome className="cursor-pointer w-[28px] h-[28px] stroke-[0.2px] group-hover:w-[30px] group-hover:h-[30px] transition-all duration-150" />
               )}
             </NavBarButton>
+            <NavBarButton onClick={toggleSearchTab} className="w-20 h-14">
+              <span className="sr-only">탐색 버튼</span>
+              {firstPath == 'search' ? (
+                <RiCommandFill className="cursor-pointer w-[27px] h-[27px] stroke-[0.8px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
+              ) : (
+                <RiCommandFill className="cursor-pointer w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
+              )}
+            </NavBarButton>
             <NavBarButton onClick={toggleExploreTab} className="w-20 h-14">
               <span className="sr-only">검색 버튼</span>
               {firstPath == 'explore' ? (
@@ -112,21 +117,10 @@ const DefaultNavBar = () => {
                 <FaPlus className="cursor-pointer w-[24px] h-[24px] group-hover:w-[26px] group-hover:h-[26px] transition-all duration-150" />
               )}
             </NavBarButton>
-            <NavBarButton onClick={toggleSearchTab} className="w-20 h-14">
-              <span className="sr-only">탐색 버튼</span>
-              {firstPath == 'search' ? (
-                <RiCommandFill className="cursor-pointer w-[27px] h-[27px] stroke-[0.8px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
-              ) : (
-                <RiCommandFill className="cursor-pointer w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
-              )}
-            </NavBarButton>
           </div>
 
           {/* Menu */}
-          <NavBarButton onClick={toggleSearchTab} className="w-20 h-14 mb-16">
-            <span className="sr-only">메뉴 버튼</span>
-            <HiMenuAlt3 className="cursor-pointer w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
-          </NavBarButton>
+          <NavBarMenuButton auth={auth} className="w-20 h-14 mb-16" />
         </div>
       </div>
     </nav>

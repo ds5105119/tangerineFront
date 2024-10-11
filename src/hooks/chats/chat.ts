@@ -1,16 +1,16 @@
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { ChatMessageType, ChatRoomType } from '@/types/api/chat';
-import { getChatRoomList, GetChatRoomListParams, GetChatMessageListParams, getChatMessageList } from './chatApi';
+import { getChatRoomList, GetChatRoomListProps, GetChatMessageListProps, getChatMessageList } from './chatApi';
 import axiosInstance from '@/lib/axiosInstance';
 
-interface UseChatRoomListParams {
+export interface UseChatRoomListProps {
   ordering?: string;
   search?: string;
 }
 
 export const useChatRoom = (uuid: string) => {
   return useQuery<ChatRoomType, Error>({
-    queryKey: ['chatroom', uuid],
+    queryKey: ['chatRoom', uuid],
     queryFn: async () => {
       try {
         const response = await axiosInstance.get<ChatRoomType>(`${process.env.NEXT_PUBLIC_CHATS_URL}rooms/${uuid}/`);
@@ -27,9 +27,9 @@ export const useChatMessages = (uuid: string) => {
     { results: ChatMessageType[]; next: number | null },
     Error
   >({
-    refetchInterval: 1000 * 10,
+    refetchInterval: 1000 * 100,
     queryKey: ['chatMessages', uuid],
-    queryFn: ({ pageParam }) => getChatMessageList(pageParam as GetChatMessageListParams),
+    queryFn: ({ pageParam }) => getChatMessageList(pageParam as GetChatMessageListProps),
     initialPageParam: { page: 1, uuid: uuid },
     getNextPageParam: (lastPage) => (lastPage.next ? { page: lastPage.next, uuid } : undefined),
   });
@@ -44,14 +44,14 @@ export const useChatMessages = (uuid: string) => {
   };
 };
 
-export const useChatRoomList = ({ ordering, search }: UseChatRoomListParams) => {
+export const useChatRoomList = ({ ordering, search }: UseChatRoomListProps) => {
   const { data, error, isLoading, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery<
     { results: ChatRoomType[]; next: number | null },
     Error
   >({
     refetchInterval: 1000 * 10,
     queryKey: ['chatRoomList', ordering, search],
-    queryFn: ({ pageParam }) => getChatRoomList(pageParam as GetChatRoomListParams),
+    queryFn: ({ pageParam }) => getChatRoomList(pageParam as GetChatRoomListProps),
     initialPageParam: { page: 1, search: search },
     getNextPageParam: (lastPage) => (lastPage.next ? { page: lastPage.next, search } : undefined),
   });

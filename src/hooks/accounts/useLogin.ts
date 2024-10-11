@@ -1,9 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 import { setAuth } from '@/lib/authToken';
+import { useAuth } from './useAuth';
 import { LoginRequestDto, socialLoginRequestDto, LoginResponseDto } from '@/types/api/accounts';
 import axiosInstance from '@/lib/axiosInstance';
 
 export const useLogin = () => {
+  const { setAuth: setClientAuth } = useAuth();
   return useMutation<LoginResponseDto, Error, LoginRequestDto>({
     mutationFn: async (credentials: LoginRequestDto) => {
       try {
@@ -18,6 +20,7 @@ export const useLogin = () => {
     },
     onSuccess: (authData) => {
       setAuth(authData);
+      setClientAuth(authData);
     },
     onError: (error) => {
       console.error('로그인 오류:', error);

@@ -10,7 +10,7 @@ interface OverlappingProfilesProps {
 
 export default function OverlappingProfiles({ user1, user2 }: OverlappingProfilesProps) {
   return (
-    <div className="relative inline-flex w-[3.2rem] h-[3.2rem] select-none">
+    <div className="flex-shrink-0 relative inline-flex w-[3.2rem] h-[3.2rem] select-none">
       <Profile user={user1} className="absolute top-0 left-0 w-12 h-12 dark:w-11 dark:h-11" />
       <Profile
         user={user2}

@@ -77,8 +77,16 @@ const MobileNavBar = () => {
               <GoHome className="cursor-pointer w-[28px] h-[28px] stroke-[0.2px] group-hover:w-[30px] group-hover:h-[30px] transition-all duration-150" />
             )}
           </NavBarButton>
-          <NavBarButton onClick={toggleExploreTab} className="w-20 h-14">
+          <NavBarButton onClick={toggleSearchTab} className="w-20 h-14">
             <span className="sr-only">검색 버튼</span>
+            {firstPath == 'search' ? (
+              <RiCommandFill className="cursor-pointer w-[27px] h-[27px] stroke-[0.8px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
+            ) : (
+              <RiCommandFill className="cursor-pointer w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
+            )}
+          </NavBarButton>
+          <NavBarButton onClick={toggleExploreTab} className="w-20 h-14">
+            <span className="sr-only">탐색 버튼</span>
             {firstPath == 'explore' ? (
               <FaCompass className="cursor-pointer w-[24px] h-[24px] group-hover:w-[26px] group-hover:h-[26px] transition-all duration-150" />
             ) : (
@@ -99,14 +107,6 @@ const MobileNavBar = () => {
               <FaPlus className="cursor-pointer w-[24px] h-[24px] group-hover:w-[26px] group-hover:h-[26px] transition-all duration-150" />
             ) : (
               <FaPlus className="cursor-pointer w-[24px] h-[24px] group-hover:w-[26px] group-hover:h-[26px] transition-all duration-150" />
-            )}
-          </NavBarButton>
-          <NavBarButton onClick={toggleSearchTab} className="w-20 h-14">
-            <span className="sr-only">탐색 버튼</span>
-            {firstPath == 'search' ? (
-              <RiCommandFill className="cursor-pointer w-[27px] h-[27px] stroke-[0.8px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
-            ) : (
-              <RiCommandFill className="cursor-pointer w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150" />
             )}
           </NavBarButton>
         </div>

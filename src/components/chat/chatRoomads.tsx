@@ -3,6 +3,7 @@ import Head from 'next/head';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line
     adsbygoogle: any;
   }
 }
@@ -12,13 +13,13 @@ const ChatRoomAds = () => {
     const pushAd = () => {
       try {
         const adsbygoogle = window?.adsbygoogle;
-        // console.log({ adsbygoogle })
         adsbygoogle.push({});
       } catch (e) {
         console.error(e);
       }
     };
 
+    // eslint-disable-next-line
     let interval = setInterval(() => {
       if (window.adsbygoogle) {
         pushAd();

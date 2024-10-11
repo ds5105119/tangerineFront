@@ -1,21 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { ChatRoomType } from '@/types/api/chat';
+import { useRouter, useParams } from 'next/navigation';
 import { AuthType } from '@/types/api/accounts';
 import { getAuth } from '@/lib/authToken';
-import { useTimeAgo } from '@/hooks/time';
+import { useTimeAgo } from '@/lib/time';
 import Profile from '../user/profile';
 import OverlappingProfiles from '../user/overlappingProfiles';
+import { ChatRoomProps } from './types';
 
-interface ChatRoomProps {
-  chatRoom: ChatRoomType;
-}
-
-const ChatRoom = ({ chatRoom }: ChatRoomProps) => {
+const ChatRoom = ({ chatRoom, resize }: ChatRoomProps) => {
   const router = useRouter();
   const [auth, setAuth] = useState<AuthType>();
+  const { uuid } = useParams();
 
   const members = () => {
     return chatRoom.members.filter((member) => member.user.handle !== auth?.user.handle);
@@ -24,14 +21,6 @@ const ChatRoom = ({ chatRoom }: ChatRoomProps) => {
   const handleChatRoomClick = () => {
     router.push(`/message/${chatRoom.uuid}`);
   };
-
-  function truncateString(str: string) {
-    if (str.length > 20) {
-      return str.slice(0, 20) + '...';
-    } else {
-      return str;
-    }
-  }
 
   useEffect(() => {
     const authData = getAuth();
@@ -42,17 +31,25 @@ const ChatRoom = ({ chatRoom }: ChatRoomProps) => {
 
   return (
     <div
-      className="flex w-full h-20 px-5 items-center space-x-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+      className={`w-full h-20 px-5 items-center space-x-3 cursor-pointer transition-all duration-75 ease-in-out
+        ${resize ? 'hidden sm:flex' : 'flex'}
+        ${chatRoom.uuid == uuid ? 'bg-gray-200 dark:bg-gray-700' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}`}
       onClick={handleChatRoomClick}
     >
       {members().length == 1 ? (
-        <Profile user={members()[0].user} className="w-12 h-12" />
+        <Profile user={members()[0].user} className="flex-shrink-0  w-12 h-12" />
       ) : (
         <OverlappingProfiles user1={members()[0].user} user2={members()[1].user} />
       )}
-      <div className="flex flex-col space-y-1">
+      <div
+        className={
+          resize
+            ? 'hidden lg:w-full lg:max-w-full lg:flex lg:flex-col lg:space-y-1'
+            : 'w-full max-w-full flex flex-col space-y-1'
+        }
+      >
         {chatRoom.name ? (
-          <h2 className="text-base font-semibold text-overflow select-none">{chatRoom.name}</h2>
+          <h2 className="text-base font-semibold select-none">{chatRoom.name}</h2>
         ) : (
           <h2 className="text-base font-semibold text-overflow select-none">
             {members()
@@ -61,7 +58,7 @@ const ChatRoom = ({ chatRoom }: ChatRoomProps) => {
           </h2>
         )}
         <div className="flex space-x-1 items-center">
-          <div className="text-sm font-semibold text-overflow">{truncateString(chatRoom.first_message)}</div>
+          <div className="text-sm font-semibold truncate max-w-[60%]">{chatRoom.first_message}</div>
           <div className="text-sm text-gray-500 select-none">- {useTimeAgo(chatRoom.updated_at)}</div>
         </div>
       </div>

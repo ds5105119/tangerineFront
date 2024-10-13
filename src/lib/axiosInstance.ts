@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const refresh_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.NEXT_PUBLIC_REFRESH_TOKEN_URI}`;
+      const refresh_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.NEXT_PUBLIC_REFRESH_TOKEN_URL}`;
       const response = await axios.post<loginResponseProps>(refresh_url, {}, { withCredentials: true });
 
       if (response.status === 200) {

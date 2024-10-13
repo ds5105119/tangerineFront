@@ -25,7 +25,7 @@ const Callback = () => {
         const returnTo = decodedState.returnTo || '/';
 
         socialLogin.mutate(
-          { url: `${process.env.NEXT_PUBLIC_GOOGLE_LOGIN_URI}`, code },
+          { url: `${process.env.NEXT_PUBLIC_GOOGLE_LOGIN_URL}`, code },
           {
             onSuccess: (authData) => {
               setAuth(authData);

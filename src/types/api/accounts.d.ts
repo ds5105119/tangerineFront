@@ -13,6 +13,17 @@ export interface User {
   is_follower?: boolean;
 }
 
+export interface UpdateAbleUser {
+  handle?: string;
+  username?: string;
+  profile?: {
+    bio?: string;
+    link_1?: string;
+    link_2?: string;
+    profile_image?: string;
+  };
+}
+
 export interface AuthUser {
   profile: {
     bio: string;
@@ -20,24 +31,9 @@ export interface AuthUser {
     link_2: string;
     profile_image: string;
   };
+  username: string;
   handle: string;
   email: string;
-}
-
-export interface LoginRequestDto {
-  email: string;
-  password: string;
-}
-
-export interface socialLoginRequestDto {
-  url: string;
-  code: string;
-}
-
-export interface LoginResponseDto {
-  access: string;
-  refresh: string;
-  user: AuthUser;
 }
 
 export interface AuthType {
@@ -46,9 +42,13 @@ export interface AuthType {
   user: AuthUser;
 }
 
-export interface RegistrationDto {
-  username: string;
-  email: string;
-  password1: string;
-  password2: string;
+export interface UserQuery {
+  pages: Array<{
+    results: User[];
+    next: number | null;
+  }>;
+  pageParams: Array<{
+    page: number;
+    search: string;
+  }>;
 }

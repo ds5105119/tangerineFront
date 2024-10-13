@@ -6,10 +6,11 @@ import { User } from '@/types/api/accounts';
 
 interface UserProfileProps {
   user?: User;
+  priority?: boolean;
   className: string;
 }
 
-const Profile = ({ user, className }: UserProfileProps) => {
+const Profile = ({ user, priority, className }: UserProfileProps) => {
   const profileURL = user?.profile.profile_image || '/defaultUserIcon.png';
   const handle = user?.handle || 'unknown';
 
@@ -25,6 +26,7 @@ const Profile = ({ user, className }: UserProfileProps) => {
           const target = e.target as HTMLImageElement;
           target.src = profileURL;
         }}
+        priority={priority}
       />
     </div>
   );

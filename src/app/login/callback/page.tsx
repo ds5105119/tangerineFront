@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useSocialLogin } from '@/hooks/accounts/useLogin';
+import { useSocialLogin } from '@/hooks/accounts/account';
 import { setAuth } from '@/lib/authToken';
 import LoadingAnimation from '@/components/loadingAnimation';
 
@@ -44,7 +44,7 @@ const Callback = () => {
   }, [code, state]);
 
   return (
-    <div className="relative min-h-screen bg-white flex items-center justify-center">
+    <div className="relative w-full h-full bg-white flex items-center justify-center align-middle">
       <div className="w-12 h-12 relative" role="status" aria-label="로딩 중">
         <LoadingAnimation />
       </div>

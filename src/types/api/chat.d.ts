@@ -43,3 +43,8 @@ export interface ChatMessagesQuery {
     search: string;
   }>;
 }
+
+
+export interface CreateChatRoomType {
+  handles: string[]
+}

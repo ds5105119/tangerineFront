@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useRegistration } from '@/hooks/accounts/useRegistration';
+import { useRegistration } from '@/hooks/accounts/account';
 import { setAuth } from '@/lib/authToken';
-import { useUser } from '@/hooks/accounts/useUser';
 import axios from 'axios';
 import Button from '@/components/button/button';
 import GoogleLoginButton from '@/components/button/googleLoginButton';
@@ -22,6 +20,8 @@ export default function LoginPage() {
   const [password1, setPassword1] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
   const [showToast, setShowToast] = useState<string>('');
+  const [handleValid, setHandleValid] = useState<boolean>(false);
+  const [passwordValid, setPasswordValid] = useState<boolean>(false);
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     registration.mutate(
@@ -53,10 +53,14 @@ export default function LoginPage() {
     );
   };
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-    const { data, isLoading, error } = useUser(username);
-  };
+  useEffect(() => {
+    setPasswordValid(password1 === password2);
+  }, [password2]);
+
+  useEffect(() => {
+    const regex = /^[a-z0-9._]+$/;
+    setHandleValid(regex.test(username));
+  }, [username]);
 
   return (
     <div className="relative w-full min-h-screen max-h-dvh flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -79,13 +83,20 @@ export default function LoginPage() {
                     id="text"
                     name="text"
                     type="text"
-                    autoComplete="text"
+                    autoComplete="off"
                     placeholder="ID 입력"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
+                {username && !handleValid ? (
+                  <div className="mt-1 text-xs font-medium text-red-600 text-wrap">
+                    유효한 ID를 입력하세요. ID는 영소문자, 숫자 및 점(.)과 언더스코어(_)로만 이루어져야 합니다.
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
 
               <div>
@@ -108,8 +119,8 @@ export default function LoginPage() {
                 <div className="text-sm font-bold">비밀번호</div>
                 <div className="mt-1">
                   <PasswordInput
-                    id="password"
-                    name="password"
+                    id="password1"
+                    name="password1"
                     placeholder="비밀번호 입력"
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -123,18 +134,29 @@ export default function LoginPage() {
                 <div className="text-sm font-bold">비밀번호 확인</div>
                 <div className="mt-1">
                   <PasswordInput
-                    id="password"
-                    name="password"
+                    id="password2"
+                    name="password2"
                     placeholder="비밀번호 재입력"
                     required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className={`${password2 && !passwordValid ? 'border-2 border-red-600 focus:border-red-600' : 'border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'} appearance-none block w-full px-3 py-2 rounded-md shadow-sm placeholder-gray-400 sm:text-sm`}
                     value={password2}
                     onChange={(e) => setPassword2(e.target.value)}
                   />
+                  {password2 && !passwordValid ? (
+                    <div className="mt-1 text-xs font-medium text-red-600">패스워드가 일치하지 않습니다.</div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
               <div>
-                <Button type="submit" intent={'default'} size={'long'} colorScheme={'blue'} id="submit">
+                <Button
+                  type="submit"
+                  intent={handleValid && passwordValid ? 'default' : 'disabled'}
+                  size={'long'}
+                  colorScheme={'blue'}
+                  id="submit"
+                >
                   회원가입
                 </Button>
               </div>

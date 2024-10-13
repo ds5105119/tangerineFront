@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLogin } from '@/hooks/accounts/useLogin';
+import { useLogin } from '@/hooks/accounts/account';
 import { setAuth } from '@/lib/authToken';
 import Button from '@/components/button/button';
 import GoogleLoginButton from '@/components/button/googleLoginButton';
@@ -28,9 +28,9 @@ export default function LoginPage() {
           const previousUrl = document.referrer;
 
           if (previousUrl && !previousUrl.includes('/login')) {
-            router.back();
+            window.location.href = previousUrl;
           } else {
-            router.push('/');
+            window.location.href = '/';
           }
         },
         onError: () => {

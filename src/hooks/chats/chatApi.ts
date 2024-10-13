@@ -1,5 +1,5 @@
 import axiosInstance from '@/lib/axiosInstance';
-import { ChatRoomType, ChatMessageType } from '@/types/api/chat';
+import { ChatRoomType, ChatMessageType, CreateChatRoomType } from '@/types/api/chat';
 
 export interface GetChatRoomListProps {
   page?: number;
@@ -11,8 +11,8 @@ export interface GetChatMessageListProps {
   uuid?: string;
 }
 
-export interface CreatChatRoomProps {
-  name: string;
+export interface UpdateChatRoomProps {
+  name?: string;
   handles: string[];
 }
 
@@ -34,10 +34,9 @@ export const getChatRoomList = async ({
   };
 };
 
-export const createChatRoom = async ({ name, handles }: CreatChatRoomProps): Promise<ChatRoomType> => {
+export const createChatRoom = async ({ handles }: CreateChatRoomType): Promise<ChatRoomType> => {
   try {
     const { data } = await axiosInstance.post(`${process.env.NEXT_PUBLIC_CHATS_ROOMS_URL}`, {
-      name,
       handles,
     });
 
@@ -48,7 +47,7 @@ export const createChatRoom = async ({ name, handles }: CreatChatRoomProps): Pro
   }
 };
 
-export const updateChatRoom = async ({ name, handles }: CreatChatRoomProps): Promise<ChatRoomType> => {
+export const updateChatRoom = async ({ name, handles }: UpdateChatRoomProps): Promise<ChatRoomType> => {
   try {
     const { data } = await axiosInstance.patch(`${process.env.NEXT_PUBLIC_CHATS_ROOMS_URL}`, {
       name,

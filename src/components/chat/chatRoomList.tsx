@@ -7,6 +7,7 @@ import { useChatRoomList } from '@/hooks/chats/chat';
 import { AuthType } from '@/types/api/accounts';
 import { getAuth } from '@/lib/authToken';
 import { ChatRoomListProps } from './types';
+import { Suspense } from 'react';
 import ChatRoom from './chatRoom';
 import ChatRoomAds from './chatRoomAds';
 import ChatRoomSkeleton from './chatRoomSkeleton';
@@ -40,9 +41,11 @@ const ChatRoomList = ({ ordering, search, resize }: ChatRoomListProps) => {
 
   return (
     <div className="h-full w-full">
-      <ChatRoomAds />
-      {chatRooms?.map((value) => <ChatRoom key={value.uuid} chatRoom={value} resize={resize}></ChatRoom>)}
-      {chatRoomIsLoading && chatRoomHasNextPage ? <ChatRoomSkeleton /> : <div ref={chatRoomRef} />}
+      <Suspense fallback={<ChatRoomSkeleton />}>
+        <ChatRoomAds />
+        {chatRooms?.map((value) => <ChatRoom key={value.uuid} chatRoom={value} resize={resize} auth={auth}></ChatRoom>)}
+        {chatRoomIsLoading && chatRoomHasNextPage ? <ChatRoomSkeleton /> : <div ref={chatRoomRef} />}
+      </Suspense>
     </div>
   );
 };

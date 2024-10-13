@@ -1,6 +1,13 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { ChatMessageType, ChatRoomType } from '@/types/api/chat';
-import { getChatRoomList, GetChatRoomListProps, GetChatMessageListProps, getChatMessageList } from './chatApi';
+import { CreateChatRoomType } from '@/types/api/chat';
+import {
+  GetChatRoomListProps,
+  GetChatMessageListProps,
+  createChatRoom,
+  getChatRoomList,
+  getChatMessageList,
+} from './chatApi';
 import axiosInstance from '@/lib/axiosInstance';
 
 export interface UseChatRoomListProps {
@@ -18,6 +25,15 @@ export const useChatRoom = (uuid: string) => {
       } catch (error) {
         throw error;
       }
+    },
+  });
+};
+
+export const useCreateChatRoom = () => {
+  return useMutation<ChatRoomType, Error, CreateChatRoomType>({
+    mutationFn: createChatRoom,
+    onError: (error) => {
+      console.error('채팅방 생성 오류:', error);
     },
   });
 };

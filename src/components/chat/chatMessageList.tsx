@@ -19,13 +19,7 @@ const ChatMessageList = () => {
   const { uuid } = useParams();
   const { ref: chatMessageRef, inView: chatMessageInView } = useInView();
 
-  const {
-    chatMessages,
-    error: messageError,
-    isLoading: messageIsLoading,
-    fetchNextPage: messageFetchNextPage,
-    hasNextPage: messageHasNextPage,
-  } = useChatMessages(uuid as string);
+  const { chatMessages, fetchNextPage: messageFetchNextPage } = useChatMessages(uuid as string);
   const { data: chatRoom } = useChatRoom(uuid as string);
 
   useEffect(() => {
@@ -67,7 +61,11 @@ const ChatMessageList = () => {
         <ChatMessage
           key={index}
           isOwn={message.member == selfMemberId}
-          isConsecutive={(index > 0 ? chatMessages[index - 1].member : chatMessages[1].member) == message.member}
+          isConsecutive={
+            chatMessages.length > 1
+              ? (index > 0 ? chatMessages[index - 1].member : chatMessages[1].member) == message.member
+              : false
+          }
           time={message.created_at}
         >
           {message.text}

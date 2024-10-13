@@ -8,8 +8,8 @@ const UserProfile = ({ user }: userProfileType) => {
     <Image
       src={profileURL}
       alt={`${user.username}'s profile`}
-      width={50}
-      height={50}
+      width={40}
+      height={40}
       className="object-cover w-full h-full"
     />
   );

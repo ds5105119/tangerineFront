@@ -1,17 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { AuthType } from '@/types/api/accounts';
-import { getAuth } from '@/lib/authToken';
 import { useTimeAgo } from '@/lib/time';
 import Profile from '../user/profile';
 import OverlappingProfiles from '../user/overlappingProfiles';
 import { ChatRoomProps } from './types';
 
-const ChatRoom = ({ chatRoom, resize }: ChatRoomProps) => {
+const ChatRoom = ({ chatRoom, resize, auth }: ChatRoomProps) => {
   const router = useRouter();
-  const [auth, setAuth] = useState<AuthType>();
   const { uuid } = useParams();
 
   const members = () => {
@@ -21,13 +17,6 @@ const ChatRoom = ({ chatRoom, resize }: ChatRoomProps) => {
   const handleChatRoomClick = () => {
     router.push(`/message/${chatRoom.uuid}`);
   };
-
-  useEffect(() => {
-    const authData = getAuth();
-    if (authData) {
-      setAuth(authData);
-    }
-  }, []);
 
   return (
     <div

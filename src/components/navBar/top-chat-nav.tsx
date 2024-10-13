@@ -1,21 +1,66 @@
-import { IoArrowBack } from 'react-icons/io5';
-import { IoMdMore } from 'react-icons/io';
-import { topChatNavProps } from './types';
+'use client';
 
-const TopChatNav = ({ onBackButtonClick, onMoreButtonClick, children }: topChatNavProps) => {
+import React, { KeyboardEvent, useState } from 'react';
+import { useUserList } from '@/hooks/accounts/account';
+import { createFollow, deleteFollow } from '@/hooks/accounts/follow';
+import { UserPreviewType } from '../user/types';
+import UserFollow from '../user/user-follow';
+
+const TopRoomNav = () => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const { Users, refetch, fetchNextPage } = useUserList({ search: inputValue });
+
+  const onSubmit = () => {
+    if (inputValue) {
+      refetch();
+      fetchNextPage();
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // 한글에서 두번 입력되는 문제 해결을 위해 native Event 속성 참조
+    if (event.nativeEvent.isComposing && event.key === 'Enter') {
+      onSubmit();
+      setInputValue('');
+    } else if (event.key === 'Enter') {
+      setInputValue('');
+    }
+  };
+
+  const onFollowButtonClick = (user: UserPreviewType) => {
+    if (user.is_following) {
+      deleteFollow(user);
+    } else {
+      createFollow(user);
+    }
+    refetch();
+  };
+
   return (
-    <div className="flex w-12 justify-between items-center align-middle bg-white px-6">
-      <div className="flex h-full items-center">
-        <button onClick={onBackButtonClick}>
-          <IoArrowBack size="27" className="text-black" />
-        </button>
-        <div className="px-3 text-black">{children}</div>
+    <div className="w-full">
+      <div className="w-full min-h-16 flex justify-between items-center align-middle px-6 space-x-2">
+        <div className="w-full h-10 flex align-middle px-7 bg-gray-100 dark:bg-gray-700 rounded-[12rem]">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="검색"
+            className="w-full bg-transparent focus:outline-none"
+          />
+        </div>
       </div>
-      <button onClick={onMoreButtonClick}>
-        <IoMdMore size="27" className="text-black" />
-      </button>
+      {!!Users ? (
+        <div className="flex flex-col px-8 my-6 space-y-2">
+          {Users?.map((val) => (
+            <UserFollow key={val.handle} user={val} onFollowButtonClick={onFollowButtonClick}></UserFollow>
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
 
-export default TopChatNav;
+export default TopRoomNav;

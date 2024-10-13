@@ -10,9 +10,11 @@ export interface userProfileType {
 
 export interface userSearchType {
   user: UserPreviewType;
+  onClick: (user: UserPreviewType) => void;
 }
 
 export interface userFollowType {
   user: UserPreviewType;
-  onFollowButtonClick?: () => void;
+  onFollowButtonClick: (user: UserPreviewType) => void;
+  onUnfollowButtonClick?: (user: UserPreviewType) => void;
 }

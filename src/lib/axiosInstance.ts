@@ -1,5 +1,5 @@
 import axios, { InternalAxiosRequestConfig, AxiosRequestConfig, AxiosError } from 'axios';
-import { LoginResponseDto } from '@/types/api/accounts';
+import { loginResponseProps } from '@/hooks/accounts/accountApi';
 import { getAuth, updateAuth, clearAuth } from '@/lib/authToken';
 
 const axiosInstance = axios.create({
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refresh_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}${process.env.NEXT_PUBLIC_REFRESH_TOKEN_URI}`;
-      const response = await axios.post<LoginResponseDto>(refresh_url, {}, { withCredentials: true });
+      const response = await axios.post<loginResponseProps>(refresh_url, {}, { withCredentials: true });
 
       if (response.status === 200) {
         updateAuth(response.data.access);

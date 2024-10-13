@@ -1,8 +1,8 @@
-import { LoginResponseDto } from '@/types/api/accounts';
+import { loginResponseProps } from '@/hooks/accounts/accountApi';
 
 const AUTH_STORAGE_KEY = 'authData';
 
-export const setAuth = (authData: LoginResponseDto): void => {
+export const setAuth = (authData: loginResponseProps): void => {
   try {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
   } catch (error) {
@@ -10,11 +10,11 @@ export const setAuth = (authData: LoginResponseDto): void => {
   }
 };
 
-export const getAuth = (): LoginResponseDto | null => {
+export const getAuth = (): loginResponseProps | null => {
   try {
     const authDataString = localStorage.getItem(AUTH_STORAGE_KEY);
     if (!authDataString) return null;
-    return JSON.parse(authDataString) as LoginResponseDto;
+    return JSON.parse(authDataString) as loginResponseProps;
   } catch (error) {
     console.error('Error getting auth data from localStorage:', error);
     return null;

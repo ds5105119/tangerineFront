@@ -29,10 +29,12 @@ const NavBarMenu = forwardRef<HTMLDivElement, navBarMenuProps>((props, ref) => {
   };
 
   const handleLogout = () => {
-    logout();
-    queryClient.clear();
-    queryClient.cancelQueries();
-    alert('로그아웃 되었습니다.');
+    const isLogout = logout();
+    if (isLogout) {
+      queryClient.clear();
+      queryClient.cancelQueries();
+      alert('로그아웃 되었습니다.');
+    }
   };
 
   return (
@@ -77,5 +79,7 @@ const NavBarMenu = forwardRef<HTMLDivElement, navBarMenuProps>((props, ref) => {
     </div>
   );
 });
+
+NavBarMenu.displayName = 'NavBarMenu';
 
 export default NavBarMenu;

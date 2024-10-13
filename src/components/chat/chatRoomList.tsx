@@ -41,7 +41,9 @@ const ChatRoomList = ({ ordering, search, resize }: ChatRoomListProps) => {
   return (
     <div className="h-full w-full">
       <Suspense fallback={<ChatRoomSkeleton />}>
-        {chatRooms?.map((value) => <ChatRoom key={value.uuid} chatRoom={value} resize={resize} auth={auth}></ChatRoom>)}
+        {chatRooms?.map((value, index) => (
+          <ChatRoom key={index} chatRoom={value} resize={resize} auth={auth}></ChatRoom>
+        ))}
         {chatRoomIsLoading && chatRoomHasNextPage ? <ChatRoomSkeleton /> : <div ref={chatRoomRef} />}
       </Suspense>
     </div>

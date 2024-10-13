@@ -2,12 +2,12 @@ import axiosInstance from '@/lib/axiosInstance';
 import { ChatRoomType, ChatMessageType, CreateChatRoomType } from '@/types/api/chat';
 
 export interface GetChatRoomListProps {
-  page?: number;
+  cursor?: string | null;
   search?: string;
 }
 
 export interface GetChatMessageListProps {
-  page?: number;
+  cursor?: string | null;
   uuid?: string;
 }
 
@@ -17,20 +17,26 @@ export interface UpdateChatRoomProps {
 }
 
 export const getChatRoomList = async ({
-  page = 1,
+  cursor = null,
   search,
-}: GetChatRoomListProps): Promise<{ results: ChatRoomType[]; next: number | null }> => {
+}: GetChatRoomListProps): Promise<{ results: ChatRoomType[]; next: string | null }> => {
   const { data } = await axiosInstance.get(`${process.env.NEXT_PUBLIC_CHATS_ROOMS_URL}`, {
     params: {
-      page: page,
+      cursor: cursor,
       page_size: 20,
       search: search,
     },
   });
 
+  let nextCursor = null;
+  if (data.next) {
+    const parsedUrl = new URL(data.next);
+    nextCursor = parsedUrl.searchParams.get('cursor');
+  }
+
   return {
     results: data.results,
-    next: data.next ? page + 1 : null,
+    next: nextCursor,
   };
 };
 
@@ -71,19 +77,25 @@ export const deleteChatRoom = async (uuid: string): Promise<void> => {
 };
 
 export const getChatMessageList = async ({
-  page = 1,
+  cursor = null,
   uuid,
-}: GetChatMessageListProps): Promise<{ results: ChatMessageType[]; next: number | null }> => {
+}: GetChatMessageListProps): Promise<{ results: ChatMessageType[]; next: string | null }> => {
   const { data } = await axiosInstance.get(`${process.env.NEXT_PUBLIC_CHATS_MESSAGES_URL}${uuid}/messages`, {
     params: {
-      page: page,
-      page_size: 100,
+      cursor: cursor,
+      page_size: 50,
     },
   });
 
+  let nextCursor = null;
+  if (data.next) {
+    const parsedUrl = new URL(data.next);
+    nextCursor = parsedUrl.searchParams.get('cursor');
+  }
+
   return {
     results: data.results,
-    next: data.next ? page + 1 : null,
+    next: nextCursor,
   };
 };
 

@@ -40,14 +40,14 @@ export const useCreateChatRoom = () => {
 
 export const useChatMessages = (uuid: string) => {
   const { data, error, isLoading, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery<
-    { results: ChatMessageType[]; next: number | null },
+    { results: ChatMessageType[]; next: string | null },
     Error
   >({
     refetchInterval: 1000 * 100,
     queryKey: ['chatMessages', uuid],
     queryFn: ({ pageParam }) => getChatMessageList(pageParam as GetChatMessageListProps),
-    initialPageParam: { page: 1, uuid: uuid },
-    getNextPageParam: (lastPage) => (lastPage.next ? { page: lastPage.next, uuid } : undefined),
+    initialPageParam: { cursor: null, uuid: uuid },
+    getNextPageParam: (lastPage) => (lastPage.next ? { cursor: lastPage.next, uuid } : undefined),
   });
 
   return {
@@ -62,14 +62,14 @@ export const useChatMessages = (uuid: string) => {
 
 export const useChatRoomList = ({ ordering, search }: UseChatRoomListProps) => {
   const { data, error, isLoading, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery<
-    { results: ChatRoomType[]; next: number | null },
+    { results: ChatRoomType[]; next: string | null },
     Error
   >({
     refetchInterval: 1000 * 10,
     queryKey: ['chatRoomList', ordering, search],
     queryFn: ({ pageParam }) => getChatRoomList(pageParam as GetChatRoomListProps),
-    initialPageParam: { page: 1, search: search },
-    getNextPageParam: (lastPage) => (lastPage.next ? { page: lastPage.next, search } : undefined),
+    initialPageParam: { cursor: null, search: search },
+    getNextPageParam: (lastPage) => (lastPage.next ? { cursor: lastPage.next, search } : undefined),
   });
 
   return {

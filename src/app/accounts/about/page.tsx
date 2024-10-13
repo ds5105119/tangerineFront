@@ -57,7 +57,6 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, github, description
       <div className="p-8">
         <div className="relative w-32 h-32 mx-auto mb-6">
           <img src={image} alt={name} className="w-full h-full rounded-full object-cover" />
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-orange-500 to-pink-500 opacity-20"></div>
         </div>
         <h3 className="text-2xl font-semibold mb-2 text-center text-gray-900 dark:text-white">{name}</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">{role}</p>
@@ -229,7 +228,7 @@ export default function Home() {
                   github="https://github.com/heeeee-github"
                   description="상품 관리 및 신고 시스템 개발을 담당하고 있습니다. 테스트 주도 개발(TDD)에 관심이 많으며, 안정적이고 확장 가능한 백엔드 아키텍처 설계에 주력하고 있습니다."
                   skills={['백엔드', '상품 관리', '신고 시스템', '테스트 앱']}
-                  image="/placeholder.svg?height=200&width=200"
+                  image="/teamTangerinenee2.webp"
                 />
                 <TeamMember
                   name="권용인"
@@ -237,7 +236,7 @@ export default function Home() {
                   github="https://github.com/vanhalenpanam"
                   description="좋아요 기능과 이미지 처리 시스템을 개발하고 있습니다. OpenCV를 사용하여 이미지 프로세스 로직을 구현하였습니다."
                   skills={['백엔드', '좋아요 기능', '이미지 처리', '데이터베이스 최적화']}
-                  image="/placeholder.svg?height=200&width=200"
+                  image="/teamTangerinenee1.jpg"
                 />
                 <TeamMember
                   name="김동현"
@@ -245,7 +244,7 @@ export default function Home() {
                   github="https://github.com/ds5105119"
                   description="계정 관리, 게시글, 팔로우, 댓글, 채팅 등 다양한 기능을 개발하고 있습니다. CS/CE의 전반적인 분야에 흥미를 갖고 있으며, 프론트엔드와 백엔드를 아우르는 폭넓은 기술 스택을 보유하고 있습니다."
                   skills={['풀스택', '계정 관리', '채팅 시스템', 'UI/UX', 'Apache Pulsar', 'Docker']}
-                  image="/placeholder.svg?height=200&width=200"
+                  image="/teamTangerinenee3.jpg"
                 />
               </div>
             </div>

@@ -12,7 +12,6 @@ export default function Home() {
       <TopBasicNav></TopBasicNav>
       <TopSearchNav></TopSearchNav>
       <TopUploadNav></TopUploadNav>
-      <RoundButton>발동</RoundButton>
       <RoundButton intent={'active'}>발동</RoundButton>
       <RoundButton intent={'outline'}>발동</RoundButton>
       <RoundButton intent={'disabled'}>발동</RoundButton>

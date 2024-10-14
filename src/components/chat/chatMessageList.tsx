@@ -18,8 +18,7 @@ const ChatMessageList = () => {
   const [selfMemberId, setSelfMemberId] = useState<number>();
   const { uuid } = useParams();
   const { ref: chatMessageRef, inView: chatMessageInView } = useInView();
-
-  const { chatMessages, fetchNextPage: messageFetchNextPage } = useChatMessages(uuid as string);
+  const { chatMessages, fetchNextPage: messageFetchNextPage, hasNextPage } = useChatMessages(uuid as string);
   const { data: chatRoom } = useChatRoom(uuid as string);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const ChatMessageList = () => {
   }, []);
 
   useEffect(() => {
-    if (chatMessageInView && auth) {
+    if (chatMessageInView && auth && hasNextPage) {
       messageFetchNextPage();
     }
   }, [chatMessageInView]);

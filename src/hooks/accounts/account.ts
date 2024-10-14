@@ -19,7 +19,7 @@ import {
   getUserList,
 } from './accountApi';
 import { User, UpdateAbleUser } from '@/types/api/accounts';
-import { useAuth } from './useAuth';
+import useAuthStore from '@/lib/auth';
 
 export const logout = () => {
   let attempts = 0;
@@ -47,17 +47,17 @@ export const logout = () => {
 export const useUser = (handle: string) => {
   return useQuery<User, Error, getUserProps>({
     queryKey: ['user', handle],
-    queryFn: async () => getUser({ handle })
+    queryFn: async () => getUser({ handle }),
   });
 };
 
 export const useLogin = () => {
-  const { setAuth: setClientAuth } = useAuth();
+  const { setAuth: setClientAuth } = useAuthStore();
   return useMutation<loginResponseProps, Error, loginRequestProps>({
     mutationFn: login,
     onSuccess: (authData) => {
       setAuth(authData);
-      setClientAuth(authData);
+      setClientAuth();
     },
     onError: (error) => {
       console.error('로그인 오류:', error);
@@ -66,10 +66,12 @@ export const useLogin = () => {
 };
 
 export const useSocialLogin = () => {
+  const { setAuth: setClientAuth } = useAuthStore();
   return useMutation<loginResponseProps, Error, socialLoginRequestProps>({
     mutationFn: socialLogin,
     onSuccess: (authData) => {
       setAuth(authData);
+      setClientAuth();
     },
     onError: (error) => {
       console.error('소셜 로그인 오류:', error);
@@ -82,11 +84,13 @@ export const useRegistration = () => {
    * SimpleJWT에서 httponly쿠키 모드로 설정한 경우에도 회원가입 시에 refresh token이 반환되는 버그가 있습니다.
    * 보안 상 이를 blank 처리합니다.
    */
+  const { setAuth: setClientAuth } = useAuthStore();
   return useMutation<loginResponseProps, Error, registrationProps>({
     mutationFn: registration,
     onSuccess: (authData) => {
       authData.refresh = '';
       setAuth(authData);
+      setClientAuth();
     },
     onError: (error) => {
       console.error('회원가입 오류:', error);
@@ -95,6 +99,7 @@ export const useRegistration = () => {
 };
 
 export const useUpdateUser = () => {
+  const { updateAuth } = useAuthStore();
   return useMutation<UpdateAbleUser, Error, updateUserProps>({
     mutationFn: updateUser,
     onSuccess: async (updatedUser) => {
@@ -116,6 +121,8 @@ export const useUpdateUser = () => {
           },
         });
       }
+
+      updateAuth();
     },
     onError: (error) => {
       console.error('유저 데이터 변경 오류:', error);

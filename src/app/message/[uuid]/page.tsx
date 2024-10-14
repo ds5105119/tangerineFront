@@ -70,7 +70,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col flex-1">
         <ChatMessageList />
-        {isConnected && memberId ? <ChatInput sendMessage={sendMessage} memberid={memberId} /> : <></>}
+        {memberId ? <ChatInput sendMessage={sendMessage} memberid={memberId} /> : <></>}
       </div>
       {showToast && <Toast message={showToast} onClose={() => setShowToast('')} />}
     </main>

@@ -80,7 +80,7 @@ export default function Home() {
     }
   };
 
-  // 프로필 변경 시
+  // 프로필 이미지 변경 시
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && auth) {
@@ -173,7 +173,7 @@ export default function Home() {
         >
           <div className="flex w-full items-center space-x-5">
             {/* profile image */}
-            <div className="relative w-14 h-14 transform-all group" onClick={handleButtonClick}>
+            <div className="relative w-14 h-14 min-w-14 min-h-14 transform-all group" onClick={handleButtonClick}>
               <div className="w-full h-full group-hover:brightness-90 group-active:brightness-75 duration-200 ease-in-out">
                 <Profile user={authUserToUser(auth?.user)} className="w-full h-full" priority={true} />
               </div>

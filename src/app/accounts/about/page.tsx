@@ -176,12 +176,12 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
                   <p className="text-lg leading-relaxed mb-6 text-gray-700 dark:text-gray-300">
-                    감귤마켓은 조화와 지속 가능한 성장을 추구하는 혁신적인 마켓플레이스입니다. 우리는 팀 개개인 모두가
-                    주어진 위치에 상관없이 모든 일에 오너십을 가지고 적극적으로 참여하는 문화를 만들어가고 있습니다.
+                    Tangerinenee에서는 조화와 지속 가능한 성장을 추구하고 있습니다. 우리는 팀 개개인 모두가 주어진
+                    위치에 상관없이 모든 일에 오너십을 가지고 적극적으로 참여하는 문화를 만들어가고 있습니다.
                   </p>
                   <p className="text-lg leading-relaxed mb-6 text-gray-700 dark:text-gray-300">
-                    우리의 목표는 사용자들에게 편리하고 신뢰할 수 있는 거래 플랫폼을 제공하는 것입니다. 최신 기술과
-                    사용자 중심의 디자인을 통해 지속적으로 서비스를 개선하고 있습니다.
+                    우리의 목표는 사용자들에게 편리한 SNS를 제공하는 것입니다. 최신 기술과 사용자 중심의 디자인을 통해
+                    지속적으로 서비스를 개선하고 있습니다.
                   </p>
                   <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                     감귤마켓 팀은 항상 더 나은 서비스를 제공하기 위해 노력하고 있으며, 사용자 피드백을 적극적으로
@@ -212,7 +212,7 @@ export default function Home() {
                 <FeatureCard
                   icon={<IoIosCamera />}
                   title="지속적인 혁신"
-                  description="최신 기술을 적용하여 서비스를 지속적으로 개선합니다. AI 기반 추천 시스템으로 맞춤형 서비스를 제공합니다."
+                  description="최신 기술을 적용하여 서비스를 지속적으로 개선합니다. Milvus Vector DB 기반 추천 시스템으로 맞춤형 서비스를 제공합니다."
                 />
               </div>
             </div>

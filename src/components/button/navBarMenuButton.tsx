@@ -4,7 +4,7 @@ import { AuthType } from '@/types/api/accounts';
 import NavBarMenu from './navBarMenu';
 
 interface NavBarMenuButtonProps {
-  auth: AuthType | null;
+  auth: AuthType | undefined;
   className: string;
 }
 

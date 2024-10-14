@@ -10,7 +10,7 @@ const UserProfile = ({ user }: userProfileType) => {
       alt={`${user.username}'s profile`}
       width={40}
       height={40}
-      className="object-cover w-full h-full"
+      className="object-cover w-full h-full rounded-full"
     />
   );
 };

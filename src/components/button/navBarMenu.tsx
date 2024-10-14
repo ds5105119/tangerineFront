@@ -8,7 +8,7 @@ import { AuthType } from '@/types/api/accounts';
 import MenuButton from './menuButton';
 
 export interface navBarMenuProps {
-  auth: AuthType | null;
+  auth: AuthType | undefined;
   toggle: boolean;
 }
 

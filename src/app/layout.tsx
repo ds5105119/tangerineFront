@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import ReactQueryProvider from '@/components/react-query-provider';
 import DefaultNavBar from '@/components/navBar/navBar';
 import MobileNavBar from '@/components/navBar/mobileNavBar';
+import Posting from '@/components/post/posting';
 import './globals.css';
 
 const geistSans = localFont({
@@ -34,6 +35,7 @@ export default function RootLayout({
             <DefaultNavBar />
             {children}
             <MobileNavBar />
+            <Posting />
           </div>
         </ReactQueryProvider>
       </body>

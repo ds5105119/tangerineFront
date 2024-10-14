@@ -8,17 +8,20 @@ import { GoHome, GoHomeFill } from 'react-icons/go';
 import { RiCommandFill } from 'react-icons/ri';
 import { authUserToUser } from '@/lib/accounts';
 import { useAuth } from '@/hooks/accounts/useAuth';
+import usePostingStore from '@/lib/posting';
 import Profile from '@/components/user/profile';
 import NavBarButton from '@/components/button/navBarButton';
 import Logo from '@/assets/svg/logo.svg';
-import NavBarMenuButton from '../button/navBarMenuButton';
+import NavBarMenuButton from '@/components/button/navBarMenuButton';
+import useAuthStore from '@/lib/auth';
 
 const DefaultNavBar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const openPosting = usePostingStore((state) => state.openPosting);
   const [profile, setProfile] = useState<string>('/login');
   const [firstPath, setFirstPath] = useState<string>('unknown');
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuthStore();
 
   const toggleExploreTab = () => {
     router.push('/explore');
@@ -33,13 +36,14 @@ const DefaultNavBar = () => {
     router.push('/message');
   };
   const togglePostTab = () => {
-    router.push('/post');
+    openPosting();
   };
   const toggleProfileTab = () => {
     router.push(profile);
   };
 
   useEffect(() => {
+    setAuth();
     if (auth) {
       setProfile(`/${auth.user?.handle}`);
     }
@@ -68,11 +72,13 @@ const DefaultNavBar = () => {
               {firstPath == 'p' ? (
                 <Profile
                   user={authUserToUser(auth?.user)}
+                  priority={true}
                   className="cursor-pointer pointer-events-none border-gray-700 border-[2.5px] w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150"
                 />
               ) : (
                 <Profile
                   user={authUserToUser(auth?.user)}
+                  priority={true}
                   className="cursor-pointer pointer-events-none border-gray-300 border-[2px] w-[27px] h-[27px] group-hover:w-[29px] group-hover:h-[29px] transition-all duration-150"
                 />
               )}

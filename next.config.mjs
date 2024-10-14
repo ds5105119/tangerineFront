@@ -3,7 +3,14 @@ const nextConfig = {
   reactStrictMode: false,
 
   images: {
-    domains: ['tangerine-group.s3.amazonaws.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'tangerine-group.s3.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 
   webpack: (config) => {

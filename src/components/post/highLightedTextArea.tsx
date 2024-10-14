@@ -65,7 +65,7 @@ const HighlightedTextarea: React.FC<HighlightedTextareaProps> = ({ text, tags, s
       <textarea
         ref={textareaRef}
         value={text}
-        placeholder="새로운 소식이 있나요?"
+        placeholder={`새로운 소식이 있나요?`}
         onChange={handleTextChange}
         className="w-full h-full bg-transparent resize-none outline-none border-none overflow-hidden"
         style={{ caretColor: 'black' }}

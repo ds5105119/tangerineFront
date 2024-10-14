@@ -32,4 +32,5 @@ export interface Post {
   likes_count: number;
   created_at: string;
   comments: Comment[];
+  is_liked?: boolean;
 }

@@ -7,6 +7,7 @@ import { MdOutlinePostAdd } from 'react-icons/md';
 import { authUserToUser } from '@/lib/accounts';
 import { usePresignedImage } from '@/hooks/images/image';
 import { useCreatePost } from '@/hooks/posts/post';
+import { useQueryClient } from '@tanstack/react-query';
 import useAuthStore from '@/lib/auth';
 import HighlightedTextarea from './highLightedTextArea';
 import PostringImageList from './postringImageList';
@@ -16,6 +17,7 @@ import Toast from '@/components/toast';
 
 const Posting: React.FC = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const presignedImageHandler = usePresignedImage();
   const uploadPostHandler = useCreatePost();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -25,6 +27,12 @@ const Posting: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
   const { auth } = useAuthStore();
   const { isPostingOpen, closePosting } = usePostingStore();
+
+  const handleUploadButtonClick = () => {
+    if (!presignedImageHandler.isPending) {
+      fileInputRef.current?.click();
+    }
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -40,12 +48,15 @@ const Posting: React.FC = () => {
           },
         }
       );
+    } else if (!auth) {
+      setShowToast('로그인하여 소식을 공유해보세요.');
     }
   };
 
   const handleSubmit = () => {
     uploadPostHandler.mutate({ text: text, tags: [...new Set(tags)], images: images });
     if (uploadPostHandler.isSuccess) {
+      queryClient.invalidateQueries({ queryKey: ['postList', auth?.user.handle] });
       setImages([]);
       setText('');
       closePosting();
@@ -86,7 +97,7 @@ const Posting: React.FC = () => {
           <div className="flex justify-between items-center mt-4">
             <div className="flex space-x-4">
               <button
-                onClick={() => fileInputRef.current?.click()}
+                onClick={handleUploadButtonClick}
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
                 <IoImages size={24} />

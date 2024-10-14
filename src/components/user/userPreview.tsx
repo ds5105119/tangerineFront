@@ -62,15 +62,23 @@ const UserPreview = ({ handle }: UserPreviewProps) => {
             <div className="text-sm text-wrap">{user?.profile.bio}</div>
           </div>
         </div>
-        {auth?.user.handle === user?.handle ? (
-          <></>
-        ) : (
-          <div className="mt-5">
+        <div className="mt-5 min-w-24">
+          {auth?.user.handle === handle ? (
+            <Button
+              size={'sm'}
+              intent={'outline'}
+              onClick={() => {
+                window.location.href = '/accounts/edit';
+              }}
+            >
+              프로필 변경
+            </Button>
+          ) : (
             <Button size={'sm'} intent={'outline'} onClick={onFollowButtonClick}>
               {user?.is_following ? '팔로우 취소' : '팔로우'}
             </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

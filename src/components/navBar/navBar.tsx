@@ -13,6 +13,7 @@ import NavBarButton from '@/components/button/navBarButton';
 import Logo from '@/assets/svg/logo.svg';
 import NavBarMenuButton from '@/components/button/navBarMenuButton';
 import useAuthStore from '@/lib/auth';
+import { TbAuth2Fa } from 'react-icons/tb';
 
 const DefaultNavBar = () => {
   const router = useRouter();
@@ -51,7 +52,7 @@ const DefaultNavBar = () => {
     } else {
       setFirstPath(pathname.split('/').filter(Boolean)[0]);
     }
-  }, [pathname]);
+  }, [auth, pathname]);
 
   return (
     <nav className="h-screen w-24 shadow-primary hidden lg:block dark:shadow-dark">

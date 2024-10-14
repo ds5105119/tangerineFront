@@ -10,9 +10,9 @@ import UserPreview from '@/components/user/userPreview';
 
 export default function Home() {
   const { handle } = useParams();
-  const { data: user, isError } = useUser(handle as string);
+  const { data: user, isError, error } = useUser(handle as string);
   const { ref, inView } = useInView();
-  const postListHandler = useHandlePostList({ handle: handle as string });
+  const { posts, hasNextPage, fetchNextPage } = useHandlePostList({ handle: handle as string });
 
   useEffect(() => {
     if (isError) {
@@ -21,8 +21,8 @@ export default function Home() {
   }, [isError]);
 
   useEffect(() => {
-    if (inView && postListHandler.hasNextPage) {
-      postListHandler.fetchNextPage();
+    if (inView && hasNextPage) {
+      fetchNextPage();
     }
   }, [inView]);
 
@@ -33,7 +33,7 @@ export default function Home() {
           <UserPreview handle={user?.handle} />
         </div>
 
-        {postListHandler.posts?.map((post, index) => {
+        {posts?.map((post, index) => {
           return <Post {...post} key={index} />;
         })}
         <div ref={ref} />

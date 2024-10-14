@@ -10,7 +10,7 @@ import UserPreview from '@/components/user/userPreview';
 
 export default function Home() {
   const { handle } = useParams();
-  const { data: user, isError, refetch } = useUser(handle as string);
+  const { data: user, isError } = useUser(handle as string);
   const { ref, inView } = useInView();
   const postListHandler = useHandlePostList({ handle: handle as string });
 

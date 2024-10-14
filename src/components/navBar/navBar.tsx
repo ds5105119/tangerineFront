@@ -7,7 +7,6 @@ import { FaPaperPlane, FaRegPaperPlane } from 'react-icons/fa';
 import { GoHome, GoHomeFill } from 'react-icons/go';
 import { RiCommandFill } from 'react-icons/ri';
 import { authUserToUser } from '@/lib/accounts';
-import { useAuth } from '@/hooks/accounts/useAuth';
 import usePostingStore from '@/lib/posting';
 import Profile from '@/components/user/profile';
 import NavBarButton from '@/components/button/navBarButton';

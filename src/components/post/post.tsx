@@ -105,6 +105,7 @@ const Post: React.FC<PostType> = (post) => {
           <div className="flex items-center space-x-4">
             <button onClick={() => setLiked(!liked)} className={`${liked ? 'text-red-500' : 'text-gray-500'}`}>
               <FaHeart className={`w-6 h-6 ${liked ? 'fill-current' : ''}`} />
+              <FaRegHeart className={`w-6 h-6 ${liked ? 'fill-current' : ''}`} />
             </button>
             <button className="text-gray-500">
               <FaRegMessage className="w-6 h-6" />

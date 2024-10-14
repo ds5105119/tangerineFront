@@ -13,7 +13,7 @@ const HighlightedTextarea: React.FC<HighlightedTextareaProps> = ({ text, tags, s
 
   useEffect(() => {
     adjustTextareaHeight();
-  }, [text]);
+  }, [text, tags]); // tags제거해야함 (오류 때문에 잠시 넣음)
 
   const adjustTextareaHeight = () => {
     if (textareaRef.current && containerRef.current) {

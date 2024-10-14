@@ -36,7 +36,7 @@ const Posting: React.FC = () => {
             setImages([...images, uploadedUrl]);
           },
           onError: () => {
-            setShowToast('파일 업로드 중 문제가 발생하였습니다.');
+            setShowToast('파일 업로드 중 오류가 발생하였습니다.');
           },
         }
       );

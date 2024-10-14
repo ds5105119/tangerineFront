@@ -13,7 +13,6 @@ import NavBarButton from '@/components/button/navBarButton';
 import Logo from '@/assets/svg/logo.svg';
 import NavBarMenuButton from '@/components/button/navBarMenuButton';
 import useAuthStore from '@/lib/auth';
-import { TbAuth2Fa } from 'react-icons/tb';
 
 const DefaultNavBar = () => {
   const router = useRouter();
